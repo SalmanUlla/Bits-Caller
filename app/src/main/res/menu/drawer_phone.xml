@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single" android:id="@+id/group1">
+
+        <item
+            android:title="HOME"
+            android:id="@+id/home"
+            android:icon="@drawable/home">
+        </item>
+
+
+        <item
+            android:title="MANAGE PHONE LIST"
+            android:id="@+id/phonelist"
+            android:icon="@drawable/phonelist">
+
+        </item>
+
+    <item
+        android:title="MANAGE SMS LIST"
+        android:id="@+id/smslist"
+        android:icon="@drawable/smslist">
+    </item>
+    </group>
+
+        <group android:checkableBehavior="single" android:id="@+id/group2">
+
+        <item
+
+            android:title="CLEAR LOG"
+            android:id="@+id/clearlog"
+            android:icon="@drawable/clearlog">
+        </item>
+        <item
+            android:title="ABOUT US"
+            android:id="@+id/about"
+            android:icon="@drawable/about">
+        </item>
+
+    </group>
+
+</menu>
