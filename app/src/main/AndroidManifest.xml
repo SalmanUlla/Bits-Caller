@@ -17,11 +17,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".home" />
-        <activity android:name=".phone"></activity>
+        <activity android:name=".phone" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <activity
+            android:name=".email"
+            android:parentActivityName=".home" />
+        <activity android:name=".about"></activity>
     </application>
 
 </manifest>

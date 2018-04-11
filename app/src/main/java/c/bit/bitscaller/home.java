@@ -24,7 +24,7 @@ public class home extends AppCompatActivity {
 
     public void email(View view)
     {
-
-
-    }
+        Intent intent = new Intent(home.this,email.class);
+        startActivity(intent);
+        }
 }

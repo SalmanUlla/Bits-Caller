@@ -6,11 +6,10 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 android:fitsSystemWindows="true"
 android:id="@+id/drawerlayout">
 
-<RelativeLayout
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/relativelayout1"
     android:background="#ffffff">
 
 
@@ -21,12 +20,26 @@ android:id="@+id/drawerlayout">
         android:layout_height="?attr/actionBarSize"
         android:background="#00bcd4"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+<android.support.design.widget.TabLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/cyan"
+    app:tabMode="fixed"
+    app:tabGravity="fill"
+    app:tabIndicatorColor="@color/colorPrimaryDark"
+    app:tabIndicatorHeight="5dp"
+    android:id="@+id/tablayout">
+</android.support.design.widget.TabLayout>
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/viewager">
+    </android.support.v4.view.ViewPager>
 
 
 
 
-
-</RelativeLayout>
+</LinearLayout>
 
 <android.support.design.widget.NavigationView
     android:id="@+id/navigation_menu"

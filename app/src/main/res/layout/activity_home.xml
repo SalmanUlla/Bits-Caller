@@ -32,7 +32,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="190dp"
-        android:background="@drawable/mail_icon"
+        android:background="@drawable/mail"
         android:onClick="email" />
     <ImageView
         android:layout_width="135dp"

@@ -3,6 +3,8 @@ package c.bit.bitscaller;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,9 +12,16 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 
 public class phone extends AppCompatActivity {
 
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private ViewPageAdapter adapter;
     Toolbar toolbar;
     ActionBarDrawerToggle actionBarDrawerToggle;
     NavigationView navigationView;
@@ -23,11 +32,23 @@ public class phone extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone);
 
+        tabLayout =(TabLayout) findViewById(R.id.tablayout);
+        viewPager =(ViewPager) findViewById(R.id.viewager);
+        adapter = new ViewPageAdapter(getSupportFragmentManager());
+
+         // adding fragments here
+        adapter.AddFragment(new Fragmentcall(),"");
+        adapter.AddFragment(new Fragmentsms(),"");
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+
+        tabLayout.getTabAt(0).setIcon(R.drawable.callblocked);
+        tabLayout.getTabAt(1).setIcon(R.drawable.smsblocked);
+
         navigationView = (NavigationView) findViewById(R.id.navigation_menu);
 
 
 
-        final RelativeLayout layout = (RelativeLayout) findViewById(R.id.relativelayout1);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -37,6 +58,11 @@ public class phone extends AppCompatActivity {
                     case R.id.home:
                         finish();
                         break;
+                    case R.id.about:
+                        Intent intent = new Intent(phone.this,about.class);
+                        startActivity(intent);
+                        break;
+
 
                 }
                 return  false;

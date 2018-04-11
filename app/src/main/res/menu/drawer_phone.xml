@@ -32,7 +32,7 @@
             android:icon="@drawable/clearlog">
         </item>
         <item
-            android:title="ABOUT US"
+            android:title="ABOUT"
             android:id="@+id/about"
             android:icon="@drawable/about">
         </item>
