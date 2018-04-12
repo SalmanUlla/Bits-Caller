@@ -1,7 +1,10 @@
 package c.bit.bitscaller;
 
+import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.CountDownTimer;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -20,6 +23,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.widget.Toast;
 
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+
+import java.util.List;
+
 public class phone extends AppCompatActivity {
 
     private boolean bb;
@@ -32,6 +43,46 @@ public class phone extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone);
+
+        Dexter.withActivity(this)
+                .withPermissions(
+                        Manifest.permission.INTERNET,
+                        Manifest.permission.ACCESS_NETWORK_STATE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.READ_CONTACTS,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_CALENDAR,
+                        Manifest.permission.INTERNET,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                                .withListener(new MultiplePermissionsListener() {
+                                    @Override
+                                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                                        // check if all permissions are granted
+                                        if (report.areAllPermissionsGranted()) {
+                                            // do you work now
+                                        }
+
+                                        // check for permanent denial of any permission
+                                        if (report.isAnyPermissionPermanentlyDenied()) {
+                                            Intent intent = new Intent();
+                                            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                            Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                            intent.setData(uri);
+                                            startActivity(intent);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                                        token.continuePermissionRequest();
+                                    }
+                                })
+                                .onSameThread()
+                                .check();
+
 
         toolbar = (Toolbar) findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
@@ -104,12 +155,9 @@ public class phone extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id =item.getItemId();
-        if(id==R.id.phone_clearlog)
-        {
+        int id = item.getItemId();
+        if (id == R.id.phone_clearlog) {
             //code for phone clear log
-
-
 
 
         }
