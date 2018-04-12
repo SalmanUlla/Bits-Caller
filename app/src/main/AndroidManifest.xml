@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="c.bit.bitscaller">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,7 +19,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".home" />
         <activity android:name=".phone" />
 
         <meta-data
@@ -25,8 +27,17 @@
 
         <activity
             android:name=".email"
-            android:parentActivityName=".home" />
-        <activity android:name=".about"></activity>
+            android:parentActivityName=".phone" />
+        <activity
+            android:name=".about"
+            android:parentActivityName=".phone" />
+        <activity
+            android:name=".sms"
+            android:parentActivityName=".phone" />
+        <activity android:name=".managephonelist"
+            android:parentActivityName=".phone"/>
+        <activity android:name=".managesmslist"
+            android:parentActivityName=".phone"></activity>
     </application>
 
 </manifest>

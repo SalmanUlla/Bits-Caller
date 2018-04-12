@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
-public class about extends AppCompatActivity {
+public class managephonelist extends AppCompatActivity {
 
     Toolbar toolbar;
 
@@ -12,11 +12,11 @@ public class about extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
-        toolbar = (Toolbar) findViewById(R.id.toolbar4);
+        setContentView(R.layout.activity_managephonelist);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar5);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("ABOUT");
-
+        getSupportActionBar().setTitle("MANAGE PHONE LIST");
     }
 }

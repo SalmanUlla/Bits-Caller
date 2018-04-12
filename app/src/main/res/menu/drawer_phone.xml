@@ -1,15 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
     <group android:checkableBehavior="single" android:id="@+id/group1">
 
         <item
-            android:title="HOME"
-            android:id="@+id/home"
-            android:icon="@drawable/home">
+            android:title="PHONE BLACKLIST"
+            android:id="@+id/phoneblacklist"
+            android:icon="@drawable/callblocked">
+
         </item>
 
+        <item
+            android:title="SMS BLACKLIST"
+            android:id="@+id/smsblacklist"
+            android:icon="@drawable/smsblocked">
+        </item>
+    </group>
+
+    <group android:checkableBehavior="single" android:id="@+id/group2">
 
         <item
+            android:title="SPAM MAILS"
+            android:id="@+id/spam_mails"
+            android:icon="@drawable/mail_icon">
+        </item>
+
+    </group>
+
+    <group android:checkableBehavior="single" android:id="@+id/group3">
+    <item
             android:title="MANAGE PHONE LIST"
             android:id="@+id/phonelist"
             android:icon="@drawable/phonelist">
@@ -23,14 +43,8 @@
     </item>
     </group>
 
-        <group android:checkableBehavior="single" android:id="@+id/group2">
+        <group android:checkableBehavior="single" android:id="@+id/group4">
 
-        <item
-
-            android:title="CLEAR LOG"
-            android:id="@+id/clearlog"
-            android:icon="@drawable/clearlog">
-        </item>
         <item
             android:title="ABOUT"
             android:id="@+id/about"

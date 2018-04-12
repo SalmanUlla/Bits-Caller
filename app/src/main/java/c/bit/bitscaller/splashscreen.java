@@ -25,7 +25,7 @@ public class splashscreen extends AppCompatActivity {
                 try
                 {
                     sleep(2000);
-                    Intent intent = new Intent(splashscreen.this,home.class);
+                    Intent intent = new Intent(splashscreen.this,phone.class);
                     startActivity(intent);
                     finish();
                 } catch (InterruptedException e){

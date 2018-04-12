@@ -5,6 +5,15 @@
     android:background="@color/white"
     android:orientation="vertical">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar4"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#00bcd4"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+
+
     <ImageView
         android:id="@+id/bits"
         android:layout_width="120dp"
