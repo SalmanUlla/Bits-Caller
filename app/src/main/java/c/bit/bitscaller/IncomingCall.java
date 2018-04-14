@@ -17,7 +17,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class IncomingCall extends BroadcastReceiver {
-    Context ctx;
     DatabaseHelper db;
     DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     String d = (String) df.format(Calendar.getInstance().getTime());
@@ -38,7 +37,7 @@ public class IncomingCall extends BroadcastReceiver {
                 String name = getContactName(number, context);
                 if (name == "") {
                     Intent i = new Intent(context, AlertDial.class);
-                    i.putExtra("NAME", "Unknown Number");
+                    i.putExtra("NAME", "Blocked Caller");
                     i.putExtra("NUMBER", number);
                     db.insert(number, latitude, longitude, date, time, 1, 1);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -56,7 +55,6 @@ public class IncomingCall extends BroadcastReceiver {
         } catch (Exception e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
         }
-
     }
 
     public String getContactName(final String phoneNumber, Context context) {

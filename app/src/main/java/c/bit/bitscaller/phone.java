@@ -191,9 +191,7 @@ public class phone extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.phone_clearlog) {
-            //code for phone clear log
-
-
+            databaseHelper.clearlogphoneblacklist();
         }
         return super.onOptionsItemSelected(item);
     }

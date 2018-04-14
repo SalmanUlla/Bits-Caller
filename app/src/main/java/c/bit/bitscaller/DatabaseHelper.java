@@ -68,7 +68,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Pojo listRecord = new Pojo();
                String name = getContactName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)), context);
                 if (name == "")
-                    listRecord.setName("Unknown Number");
+                    listRecord.setName("Blocked Caller");
                 else
                     listRecord.setName(name);
                 listRecord.setNumber(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)));
@@ -84,6 +84,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.e("Error 2 ", "Reached Here 2");
         return list;
     }
+
+
+    public void clearlogphoneblacklist()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("Delete from "+phonetablename+"", null);
+        cursor.moveToFirst();
+    }
+
 
     public String getContactName(final String phoneNumber, Context context) {
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
