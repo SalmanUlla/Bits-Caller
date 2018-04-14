@@ -66,17 +66,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Pojo listRecord = new Pojo();
-
-                getContactName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)), context);
+               String name = getContactName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)), context);
+                if (name == "")
+                    listRecord.setName("Unknown Number");
+                else
+                    listRecord.setName(name);
                 listRecord.setNumber(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)));
                 listRecord.setLati(cursor.getFloat(cursor.getColumnIndex(DatabaseHelper.lati)));
                 listRecord.setLongi(cursor.getFloat(cursor.getColumnIndex(DatabaseHelper.longi)));
                 listRecord.setDate(cursor.getString(cursor.getColumnIndex(DatabaseHelper.date)));
                 listRecord.setTime(cursor.getString(cursor.getColumnIndex(DatabaseHelper.time)));
+                list.add(listRecord);
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
+        Log.e("Error 2 ", "Reached Here 2");
         return list;
     }
 
@@ -100,7 +105,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void insert(String numb, float lat, float lon, String dat, String tim, int bpho, int bsm) {
         db = this.getWritableDatabase();
-        Log.e("STR", "Reached Here");
         String qry = "Insert into PhoneTable(" + number + "," + bphone + "," + bsms + "," + lati + ", " + longi + ", " + date + ", " + time + ") Values (" + numb + ", " + bpho + ", " + bsm + ", " + lat + ", " + lon + ", '" + dat + "', '" + tim + "');";
         db.execSQL(qry);
     }

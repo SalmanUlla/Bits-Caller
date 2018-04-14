@@ -1,26 +1,28 @@
 package c.bit.bitscaller;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.RelativeLayout;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+
 import android.widget.Toast;
 
 import com.karumi.dexter.Dexter;
@@ -29,7 +31,10 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import c.bit.bitscaller.Adapters.PhoneRecyclerAdapter;
 
 public class phone extends AppCompatActivity {
 
@@ -39,59 +44,54 @@ public class phone extends AppCompatActivity {
     NavigationView navigationView;
     DrawerLayout drawerLayout;
 
+    private AppCompatActivity activity = phone.this;
+    private RecyclerView recyclerViewPhone;
+    private ArrayList<Pojo> list;
+    private PhoneRecyclerAdapter phoneRecyclerAdapter;
+    private DatabaseHelper databaseHelper;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone);
 
         Dexter.withActivity(this)
                 .withPermissions(
-                        Manifest.permission.INTERNET,
-                        Manifest.permission.ACCESS_NETWORK_STATE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_PHONE_STATE,
-                        Manifest.permission.READ_CONTACTS,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_CALENDAR,
-                        Manifest.permission.INTERNET,
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_FINE_LOCATION)
-                                .withListener(new MultiplePermissionsListener() {
-                                    @Override
-                                    public void onPermissionsChecked(MultiplePermissionsReport report) {
-                                        // check if all permissions are granted
-                                        if (report.areAllPermissionsGranted()) {
-                                            // do you work now
-                                        }
+                        Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_CONTACTS, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CALENDAR, Manifest.permission.INTERNET, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        // check if all permissions are granted
+                        if (report.areAllPermissionsGranted()) {
+                            // do you work now
+                        }
 
-                                        // check for permanent denial of any permission
-                                        if (report.isAnyPermissionPermanentlyDenied()) {
-                                            Intent intent = new Intent();
-                                            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                            Uri uri = Uri.fromParts("package", getPackageName(), null);
-                                            intent.setData(uri);
-                                            startActivity(intent);
-                                        }
-                                    }
+                        // check for permanent denial of any permission
+                        if (report.isAnyPermissionPermanentlyDenied()) {
+                            Intent intent = new Intent();
+                            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            Uri uri = Uri.fromParts("package", getPackageName(), null);
+                            intent.setData(uri);
+                            startActivity(intent);
+                        }
+                    }
 
-                                    @Override
-                                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                                        token.continuePermissionRequest();
-                                    }
-                                })
-                                .onSameThread()
-                                .check();
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                })
+                .onSameThread()
+                .check();
 
 
         toolbar = (Toolbar) findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("PHONE BLACKLIST");
 
+        initAndFillData();
 
         navigationView = (NavigationView) findViewById(R.id.navigation_menu);
-
-
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -133,6 +133,40 @@ public class phone extends AppCompatActivity {
         });
         setUpToolbar();
 
+    }
+
+    public void initAndFillData() {
+        recyclerViewPhone = findViewById(R.id.recyclerphone);
+        list = new ArrayList<>();
+        Log.e("Error1", "Reached Here 1");
+        phoneRecyclerAdapter = new PhoneRecyclerAdapter(list, this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(phone.this);
+        recyclerViewPhone.setLayoutManager(mLayoutManager);
+        recyclerViewPhone.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewPhone.setHasFixedSize(true);
+        recyclerViewPhone.setAdapter(phoneRecyclerAdapter);
+        databaseHelper = new DatabaseHelper(activity);
+        getDataFromSQLite();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void getDataFromSQLite() {
+        // AsyncTask is used that SQLite operation not blocks the UI Thread.
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                list.clear();
+                list.addAll(databaseHelper.getAllPhoneList(phone.this));
+                Log.e("Error3", "Reached Here 3");
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                phoneRecyclerAdapter.notifyDataSetChanged();
+            }
+        }.execute();
     }
 
     private void setUpToolbar() {
