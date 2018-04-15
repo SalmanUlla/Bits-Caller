@@ -20,6 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "bitscaller.db";
 
     public static final String phonetablename = "PhoneTable";
+    public static final String messagetable = "MessageTable";
     public static final String emailtablename = "EmailTable";
     public static final String rid = "Rid";
     public static final String number = "Number";
@@ -30,6 +31,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String date = "Date";
     public static final String time = "Time";
     public static final String email = "Email";
+    public static final String status = "Status";
+    public static final String body = "Body";
 
     private SQLiteDatabase db;
 
@@ -39,14 +42,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + phonetablename + "(" + rid + " INTEGER PRIMARY KEY AUTOINCREMENT, " + number + " TEXT, " + bphone + " INTEGER, " + bsms + " INTEGER, " + lati + " REAL, " + longi + " REAL, " + date + " TEXT, '" + time + "' TEXT);");
+        db.execSQL("create table " + phonetablename + "(" + rid + " INTEGER PRIMARY KEY AUTOINCREMENT, " + number + " TEXT, " + bphone + " INTEGER, " + lati + " REAL, " + longi + " REAL, " + date + " TEXT, '" + time + "' TEXT);");
+        db.execSQL("create table " + messagetable + " (" + rid + " INTEGER PRIMARY KEY AUTOINCREMENT, " + number + " TEXT, " + body + " TEXT, " + status + " INTEGER, " + date + " TEXT, " + time + " TEXT);");
         db.execSQL("create table " + emailtablename + "(" + rid + " INTEGER PRIMARY KEY AUTOINCREMENT, " + email + " VARCHAR)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS PhoneTable");
+        db.execSQL("DROP TABLE IF EXISTS MessageTable");
         db.execSQL("DROP TABLE IF EXISTS EmailTable");
+
         onCreate(db);
     }
 
@@ -66,9 +72,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Pojo listRecord = new Pojo();
-               String name = getContactName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)), context);
+                String name = getContactName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)), context);
                 if (name == "")
-                    listRecord.setName("Blocked Caller");
+                    listRecord.setName("Blocked Number");
                 else
                     listRecord.setName(name);
                 listRecord.setNumber(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)));
@@ -86,10 +92,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public void clearlogphoneblacklist()
-    {
+    public List<Pojo> getAllSMSList(Context context) {
+        List<Pojo> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("Delete from "+phonetablename+"", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM MessageTable where Status=1 ORDER BY rid DESC", null);
+        if (cursor.moveToFirst()) {
+            do {
+                Pojo listRecord = new Pojo();
+                String name = getContactName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)), context);
+                if (name == "")
+                    listRecord.setName("Blocked Number");
+                else
+                    listRecord.setName(name);
+                listRecord.setNumber(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)));
+                listRecord.setBody(cursor.getString(cursor.getColumnIndex(DatabaseHelper.body)));
+                listRecord.setDate(cursor.getString(cursor.getColumnIndex(DatabaseHelper.date)));
+                listRecord.setTime(cursor.getString(cursor.getColumnIndex(DatabaseHelper.time)));
+                list.add(listRecord);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return list;
+    }
+
+
+    public void clearlogphoneblacklist() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("Delete from " + phonetablename + "", null);
+        cursor.moveToFirst();
+    }
+
+    public void clearlogsmsblacklist() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("Delete from " + messagetable + "", null);
         cursor.moveToFirst();
     }
 
@@ -112,9 +148,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return contactName;
     }
 
-    public void insert(String numb, float lat, float lon, String dat, String tim, int bpho, int bsm) {
+    public void insertphone(String numb, float lat, float lon, String dat, String tim, int bpho) {
         db = this.getWritableDatabase();
-        String qry = "Insert into PhoneTable(" + number + "," + bphone + "," + bsms + "," + lati + ", " + longi + ", " + date + ", " + time + ") Values (" + numb + ", " + bpho + ", " + bsm + ", " + lat + ", " + lon + ", '" + dat + "', '" + tim + "');";
+        String qry = "Insert into PhoneTable(" + number + "," + bphone + "," + lati + ", " + longi + ", " + date + ", " + time + ") Values (" + numb + ", " + bpho + ", " + lat + ", " + lon + ", '" + dat + "', '" + tim + "');";
+        db.execSQL(qry);
+    }
+
+
+    public void insertsms(String numb, String mess, int stat, String da, String ti) {
+        db = this.getWritableDatabase();
+        String qry = "Insert into MessageTable(" + number + ", " + body + ", " + status + ", " + date + ", " + time + ") Values (" + numb + ", '" + mess + "', " + stat + ", '" + da + "', '" + ti + "');";
         db.execSQL(qry);
     }
 }

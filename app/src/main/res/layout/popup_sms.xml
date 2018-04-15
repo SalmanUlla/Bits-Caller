@@ -11,7 +11,7 @@
         android:background="#00BCD4">
 
         <Button
-            android:id="@+id/dismiss"
+            android:id="@+id/dismisssms"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_alignParentEnd="true"
@@ -20,7 +20,7 @@
 
 
     <TextView
-        android:id="@+id/callername"
+        android:id="@+id/smsname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -29,25 +29,33 @@
         android:textSize="30sp" />
 
     <TextView
-        android:id="@+id/callernumber"
+        android:id="@+id/smsnumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Number"
         android:textSize="30dp"
         android:textColor="#000000" />
+    <TextView
+        android:id="@+id/smsbody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Number"
+        android:textSize="20sp"
+        android:textColor="#000000" />
     <RelativeLayout
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#00BCD4">
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_centerInParent="true"
-           android:text="BITS Caller"
-           android:textSize="25dp"
-           android:textColor="#ffffff" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="BITS Caller"
+            android:textSize="25dp"
+            android:textColor="#ffffff" />
     </RelativeLayout>
 
 </LinearLayout>

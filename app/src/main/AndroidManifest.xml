@@ -10,9 +10,12 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.WRITE_SMS" />
 
     <application
         android:allowBackup="true"
@@ -21,9 +24,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
-
         <receiver android:name=".IncomingCall">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
@@ -31,6 +31,11 @@
         </receiver>
 
 
+        <receiver android:name=".SmsList">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
 
         <activity android:name=".splashscreen">
             <intent-filter>
@@ -40,9 +45,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".phone" />
-
-        <activity android:name=".AlertDial"
-            android:theme="@style/Theme.AppCompat.Dialog"/>
+        <activity
+            android:name=".AlertDial"
+            android:theme="@style/Theme.AppCompat.Dialog" />
 
         <meta-data
             android:name="preloaded_fonts"
@@ -57,10 +62,15 @@
         <activity
             android:name=".sms"
             android:parentActivityName=".phone" />
-        <activity android:name=".managephonelist"
-            android:parentActivityName=".phone"/>
-        <activity android:name=".managesmslist"
-            android:parentActivityName=".phone"/>
+        <activity
+            android:name=".managephonelist"
+            android:parentActivityName=".phone" />
+        <activity
+            android:name=".managesmslist"
+            android:parentActivityName=".phone" />
+
+        <activity android:name=".AlertSMS"
+            android:theme="@style/Theme.AppCompat.Dialog" />
     </application>
 
 </manifest>

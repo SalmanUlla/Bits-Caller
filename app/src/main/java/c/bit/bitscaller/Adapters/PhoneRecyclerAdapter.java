@@ -48,7 +48,7 @@ public class PhoneRecyclerAdapter extends RecyclerView.Adapter<PhoneRecyclerAdap
 
     @Override
     public PhoneViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item_phone, parent, false);
         return new PhoneViewHolder(itemView);
     }
 

@@ -29,8 +29,9 @@ public class IncomingCall extends BroadcastReceiver {
             db = new DatabaseHelper(context);
             LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            float longitude = (float) location.getLongitude();
-            float latitude = (float) location.getLatitude();
+            //TODO:IMPORTANT TO CHANGE
+            float longitude = (float) 35.2525; //(float) location.getLongitude();
+            float latitude = (float) 122.8584;// (float) location.getLatitude();
             String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
             String number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
             if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
@@ -39,7 +40,7 @@ public class IncomingCall extends BroadcastReceiver {
                     Intent i = new Intent(context, AlertDial.class);
                     i.putExtra("NAME", "Blocked Caller");
                     i.putExtra("NUMBER", number);
-                    db.insert(number, latitude, longitude, date, time, 1, 1);
+                    db.insertphone(number, latitude, longitude, date, time, 1);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
                 } else {
@@ -47,7 +48,7 @@ public class IncomingCall extends BroadcastReceiver {
                     i.putExtra("NAME", name);
                     i.putExtra("NUMBER", number);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    db.insert(number, latitude, longitude, date, time, 0, 0);
+                    db.insertphone(number, latitude, longitude, date, time, 0);
                     context.startActivity(i);
                 }
 

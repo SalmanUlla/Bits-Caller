@@ -4,25 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#e0e0e0"
     android:orientation="vertical"
-    android:background="#ffffff"
     tools:context=".sms">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#00bcd4"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-
-
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar2"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="#00bcd4"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-
-
-
-
-
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclersms"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize" />
 </RelativeLayout>
 
