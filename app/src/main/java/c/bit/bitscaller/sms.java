@@ -43,7 +43,6 @@ public class sms extends AppCompatActivity {
     public void initandfill() {
         recyclerViewSMS = findViewById(R.id.recyclersms);
         list = new ArrayList<>();
-        Log.e("Error1", "Reached Here 1");
         smsRecyclerAdapter = new SMSRecyclerAdapter(list, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(sms.this);
         recyclerViewSMS.setLayoutManager(mLayoutManager);

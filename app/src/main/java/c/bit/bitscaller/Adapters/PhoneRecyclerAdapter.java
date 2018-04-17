@@ -42,7 +42,6 @@ public class PhoneRecyclerAdapter extends RecyclerView.Adapter<PhoneRecyclerAdap
             longi = view.findViewById(R.id.longi);
             time = view.findViewById(R.id.time);
             date = view.findViewById(R.id.date);
-            Log.e("Error 4", "Reached Here  4");
         }
     }
 
@@ -59,7 +58,6 @@ public class PhoneRecyclerAdapter extends RecyclerView.Adapter<PhoneRecyclerAdap
         holder.lati.setText("" + listPhone.get(position).getLati());
         holder.longi.setText("" + listPhone.get(position).getLongi());
         holder.time.setText(listPhone.get(position).getTime());
-        Log.e("Error5 ", "Reached Here 5");
         holder.date.setText(listPhone.get(position).getDate());
     }
 

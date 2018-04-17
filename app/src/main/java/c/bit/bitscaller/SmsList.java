@@ -1,5 +1,6 @@
 package c.bit.bitscaller;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,11 +15,13 @@ import android.widget.Toast;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
 public class SmsList extends BroadcastReceiver {
 
     private static final String TAG = "Message recieved";
     DatabaseHelper db;
 
+    @SuppressLint("Deprecation")
     DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     String d = (String) df.format(Calendar.getInstance().getTime());
     String date = (String) d.substring(0, 10);
@@ -30,17 +33,33 @@ public class SmsList extends BroadcastReceiver {
         Bundle pudsBundle = intent.getExtras();
         Object[] pdus = (Object[]) pudsBundle.get("pdus");
         SmsMessage messages = SmsMessage.createFromPdu((byte[]) pdus[0]);
-        String name = getContactName(messages.getOriginatingAddress(), context);
+
         Intent smsIntent = new Intent(context, AlertSMS.class);
+        String number = messages.getOriginatingAddress();
+        String name = getContactName(number, context);
+        String body = messages.getMessageBody();
         smsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (name == "") {
+        if ((name == "") && (db.checksmsblock(number) == 999)) {
             smsIntent.putExtra("name", "Blocked Number");
-            db.insertsms(messages.getOriginatingAddress(), messages.getMessageBody(), 1, date, time);
-        } else {
+            db.insertsms(number, body, 1, date, time);
+        } else if ((name != "") && (db.checksmsblock(number) == 999)) {
             smsIntent.putExtra("name", name);
-            db.insertsms(messages.getOriginatingAddress(), messages.getMessageBody(), 0, date, time);
+            db.insertsms(number, body, 0, date, time);
+        } else if ((name == "") && (db.checksmsblock(number) == 1)) {
+            smsIntent.putExtra("name", "Blocked Number");
+            db.insertsms(number, body, 1, date, time);
+        } else if ((name == "") && (db.checksmsblock(number) == 0)) {
+            smsIntent.putExtra("name", "Unknown Number");
+            db.insertsms(number, body, 0, date, time);
+        } else if ((name != "") && (db.checksmsblock(number) == 1)) {
+            smsIntent.putExtra("name", "Blocked Number");
+            db.insertsms(number, body, 1, date, time);
+        } else if ((name != "") && (db.checksmsblock(number) == 0)) {
+            smsIntent.putExtra("name", name);
+            db.insertsms(number, body, 0, date, time);
         }
-        smsIntent.putExtra("MessageNumber", messages.getOriginatingAddress());
+
+        smsIntent.putExtra("MessageNumber", number);
         smsIntent.putExtra("Message", messages.getMessageBody());
         context.startActivity(smsIntent);
     }

@@ -51,6 +51,13 @@ public class phone extends AppCompatActivity {
     private DatabaseHelper databaseHelper;
 
     @Override
+    protected void onResume() {
+        phoneRecyclerAdapter.notifyDataSetChanged();
+        initAndFillData();
+        super.onResume();
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone);
@@ -135,10 +142,13 @@ public class phone extends AppCompatActivity {
 
     }
 
+
+
+
+
     public void initAndFillData() {
         recyclerViewPhone = findViewById(R.id.recyclerphone);
         list = new ArrayList<>();
-        Log.e("Error1", "Reached Here 1");
         phoneRecyclerAdapter = new PhoneRecyclerAdapter(list, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(phone.this);
         recyclerViewPhone.setLayoutManager(mLayoutManager);
@@ -157,7 +167,6 @@ public class phone extends AppCompatActivity {
             protected Void doInBackground(Void... params) {
                 list.clear();
                 list.addAll(databaseHelper.getAllPhoneList(phone.this));
-                Log.e("Error3", "Reached Here 3");
                 return null;
             }
 

@@ -24,7 +24,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String emailtablename = "EmailTable";
     public static final String rid = "Rid";
     public static final String number = "Number";
-    public static final String bsms = "BSMS";
     public static final String bphone = "BPhone";
     public static final String lati = "Latitude";
     public static final String longi = "Longitude";
@@ -87,7 +86,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         db.close();
-        Log.e("Error 2 ", "Reached Here 2");
         return list;
     }
 
@@ -116,17 +114,117 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    public List<Pojo> getAllManagePhoneList(Context context) {
+        List<Pojo> list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM PhoneTable GROUP BY Number ORDER BY rid DESC", null);
+        if (cursor.moveToFirst()) {
+            do {
+                Pojo listRecord = new Pojo();
+                String name = getContactName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)), context);
+                if (name == "")
+                    listRecord.setName("Blocked Number");
+                else
+                    listRecord.setName(name);
+                listRecord.setNumber(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)));
+                listRecord.setBphone(cursor.getInt(cursor.getColumnIndex(DatabaseHelper.bphone)));
+                list.add(listRecord);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return list;
+    }
+
+    public List<Pojo> getAllManageSMSList(Context context) {
+        List<Pojo> list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM MessageTable GROUP BY Number ORDER BY rid DESC", null);
+        if (cursor.moveToFirst()) {
+            do {
+                Pojo listRecord = new Pojo();
+                String name = getContactName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)), context);
+                if (name == "")
+                    listRecord.setName("Blocked Number");
+                else
+                    listRecord.setName(name);
+                listRecord.setNumber(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)));
+                listRecord.setBsms(cursor.getInt(cursor.getColumnIndex(DatabaseHelper.status)));
+                list.add(listRecord);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return list;
+    }
 
     public void clearlogphoneblacklist() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("Delete from " + phonetablename + "", null);
         cursor.moveToFirst();
+        cursor.close();
     }
 
     public void clearlogsmsblacklist() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("Delete from " + messagetable + "", null);
         cursor.moveToFirst();
+    }
+
+    public void blockphone(String numb) {
+        db = this.getWritableDatabase();
+        String qry = "UPDATE PhoneTable SET Bphone=1 WHERE Number=" + numb + ";";
+        db.execSQL(qry);
+    }
+
+    public void unblockphone(String numb) {
+        db = this.getWritableDatabase();
+        String qry = "UPDATE PhoneTable SET Bphone=0 WHERE Number=" + numb + ";";
+        db.execSQL(qry);
+    }
+
+    public void blocksms(String numb) {
+        db = this.getWritableDatabase();
+        String qry = "UPDATE MessageTable SET Status=1 WHERE Number=" + numb + ";";
+        db.execSQL(qry);
+    }
+
+    public void unblocksms(String numb) {
+        db = this.getWritableDatabase();
+        String qry = "UPDATE MessageTable SET Status=0 WHERE Number=" + numb + ";";
+        db.execSQL(qry);
+    }
+
+    public int checkphoneblock(String numb) {
+        int status = 999;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM PhoneTable where Number=" + numb + " ORDER BY rid DESC LiMIT 1", null);
+        if (cursor.moveToFirst()) {
+            status = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.bphone));
+            cursor.close();
+            db.close();
+            if (status == 0)
+                return 0;
+            else if (status == 1)
+                return 1;
+        }
+        return 999;
+    }
+
+    public int checksmsblock(String numb) {
+        int status = 999;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM MessageTable where Number=" + numb + " ORDER BY rid DESC LiMIT 1", null);
+        if (cursor.moveToFirst()) {
+            status = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.bphone));
+            cursor.close();
+            db.close();
+            if (status == 0)
+                return 0;
+            else if (status == 1)
+                return 1;
+        }
+        return 999;
     }
 
 

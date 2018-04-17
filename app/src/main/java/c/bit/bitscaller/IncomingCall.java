@@ -36,14 +36,42 @@ public class IncomingCall extends BroadcastReceiver {
             String number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
             if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
                 String name = getContactName(number, context);
-                if (name == "") {
+                if ((name == "") && (db.checkphoneblock(number) == 999)) {
                     Intent i = new Intent(context, AlertDial.class);
                     i.putExtra("NAME", "Blocked Caller");
                     i.putExtra("NUMBER", number);
                     db.insertphone(number, latitude, longitude, date, time, 1);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
-                } else {
+                } else if ((name != "") && (db.checkphoneblock(number) == 999)) {
+                    Intent i = new Intent(context, AlertDial.class);
+                    i.putExtra("NAME", name);
+                    i.putExtra("NUMBER", number);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    db.insertphone(number, latitude, longitude, date, time, 0);
+                    context.startActivity(i);
+                } else if ((name == "") && (db.checkphoneblock(number) == 0)) {
+                    Intent i = new Intent(context, AlertDial.class);
+                    i.putExtra("NAME", "Unknown Caller");
+                    i.putExtra("NUMBER", number);
+                    db.insertphone(number, latitude, longitude, date, time, 0);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
+                } else if ((name == "") && (db.checkphoneblock(number) == 1)) {
+                    Intent i = new Intent(context, AlertDial.class);
+                    i.putExtra("NAME", "Blocked Caller");
+                    i.putExtra("NUMBER", number);
+                    db.insertphone(number, latitude, longitude, date, time, 1);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
+                } else if ((name != "") && (db.checkphoneblock(number) == 1)) {
+                    Intent i = new Intent(context, AlertDial.class);
+                    i.putExtra("NAME", "Blocked Caller");
+                    i.putExtra("NUMBER", number);
+                    db.insertphone(number, latitude, longitude, date, time, 1);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
+                } else if ((name != "") && (db.checkphoneblock(number) == 0)) {
                     Intent i = new Intent(context, AlertDial.class);
                     i.putExtra("NAME", name);
                     i.putExtra("NUMBER", number);
