@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="#e0e0e0"
     android:orientation="vertical"
+    android:id="@+id/sms"
     tools:context=".sms">
 
     <android.support.v7.widget.Toolbar

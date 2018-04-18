@@ -16,8 +16,11 @@
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.WRITE_SMS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -37,14 +40,17 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".splashscreen">
+        <activity android:name=".splashscreen"
+            android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".phone" />
+        <activity android:name=".phone"
+                  android:screenOrientation="portrait"/>
         <activity
             android:name=".AlertDial"
             android:theme="@style/Theme.AppCompat.Dialog" />
@@ -54,23 +60,37 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name=".email"
-            android:parentActivityName=".phone" />
+            android:name=".news"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".phone"
+            />
         <activity
             android:name=".about"
-            android:parentActivityName=".phone" />
+            android:parentActivityName=".phone"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".sms"
-            android:parentActivityName=".phone" />
+            android:parentActivityName=".phone"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".managephonelist"
-            android:parentActivityName=".phone" />
+            android:parentActivityName=".phone"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".managesmslist"
-            android:parentActivityName=".phone" />
+            android:parentActivityName=".phone"
+            android:screenOrientation="portrait"/>
 
         <activity android:name=".AlertSMS"
             android:theme="@style/Theme.AppCompat.Dialog" />
+
+        <receiver
+            android:name=".ConnectivityReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

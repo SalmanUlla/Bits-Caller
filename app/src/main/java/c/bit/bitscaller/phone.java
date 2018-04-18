@@ -4,12 +4,17 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,11 +23,12 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.annotation.Nullable;
 
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.karumi.dexter.Dexter;
@@ -36,7 +42,7 @@ import java.util.List;
 
 import c.bit.bitscaller.Adapters.PhoneRecyclerAdapter;
 
-public class phone extends AppCompatActivity {
+public class phone extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener {
 
     private boolean bb;
     Toolbar toolbar;
@@ -49,13 +55,8 @@ public class phone extends AppCompatActivity {
     private ArrayList<Pojo> list;
     private PhoneRecyclerAdapter phoneRecyclerAdapter;
     private DatabaseHelper databaseHelper;
+    private static MyApplication mInstance;
 
-    @Override
-    protected void onResume() {
-        phoneRecyclerAdapter.notifyDataSetChanged();
-        initAndFillData();
-        super.onResume();
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,7 +95,8 @@ public class phone extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("PHONE BLACKLIST");
+        getSupportActionBar().setTitle("CALL BLACKLIST");
+
 
         initAndFillData();
 
@@ -115,7 +117,7 @@ public class phone extends AppCompatActivity {
                         break;
 
                     case R.id.spam_mails:
-                        Intent intent2 = new Intent(phone.this, email.class);
+                        Intent intent2 = new Intent(phone.this, news.class);
                         startActivity(intent2);
                         break;
                     case R.id.phonelist:
@@ -138,12 +140,11 @@ public class phone extends AppCompatActivity {
                 return false;
             }
         });
+
         setUpToolbar();
 
+
     }
-
-
-
 
 
     public void initAndFillData() {
@@ -182,7 +183,7 @@ public class phone extends AppCompatActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerlayout);
         toolbar = (Toolbar) findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("PHONE BLACKLIST");
+        getSupportActionBar().setTitle("Call Blacklist");
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
@@ -211,7 +212,16 @@ public class phone extends AppCompatActivity {
     //pressing back button twice to exit
     public void onBackPressed() {
         if (!bb) {
-            Toast.makeText(this, "press back again to exit", Toast.LENGTH_LONG).show();
+            final Toast toast = Toast.makeText(getApplicationContext(), "press back again to exit", Toast.LENGTH_SHORT);
+            toast.show();
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    toast.cancel();
+                }
+            }, 800);
             bb = true;
         } else {
             super.onBackPressed();
@@ -228,5 +238,41 @@ public class phone extends AppCompatActivity {
         }.start();
     }
 
-}
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        ConnectivityReceiver connectivityReceiver = new ConnectivityReceiver();
+        registerReceiver(connectivityReceiver, intentFilter);
+
+        MyApplication.getInstance().setConnectivityListener(this);
+    }
+
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        showSnack(isConnected);
+    }
+
+
+    private void showSnack(boolean isConnected) {
+        String message;
+        int color;
+        if (!isConnected) {
+            message = "Sorry! Not Connected To Internet";
+            color = Color.RED;
+            Snackbar snackbar = Snackbar
+                    .make(findViewById(R.id.drawerlayout), message, Snackbar.LENGTH_LONG);
+
+            View sbView = snackbar.getView();
+            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(color);
+            snackbar.show();
+        }
+
+
+    }
+}

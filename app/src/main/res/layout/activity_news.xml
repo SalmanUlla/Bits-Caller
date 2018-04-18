@@ -4,24 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#ffffff"
-    tools:context=".email">
-
-
-
-
+    android:id="@+id/news"
+    android:background="@color/white"
+    tools:context=".news">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar3"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="#00bcd4"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
 
-
+        <android.support.v7.widget.RecyclerView
+            android:padding="8dp"
+            android:id="@+id/recyclerView"
+            android:layout_below="@id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
 
 </RelativeLayout>
-

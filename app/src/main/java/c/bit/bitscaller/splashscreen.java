@@ -12,13 +12,8 @@ public class splashscreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splashscreen);
-        //to play video
-        VideoView videoView = (VideoView)findViewById(R.id.video_view);
-        videoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.splashscreen));
-        videoView.requestFocus();
-        videoView.start();
 
-        //delay to start homepage activity
+
         final Thread mThread = new Thread(){
             @Override
             public void run() {

@@ -9,7 +9,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerInParent="true"
-        android:src="@drawable/mood" />
+        android:src="@drawable/bits123" />
 
     <TextView
         android:layout_width="wrap_content"

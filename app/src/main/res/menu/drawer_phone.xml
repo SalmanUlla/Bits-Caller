@@ -5,14 +5,14 @@
     <group android:checkableBehavior="single" android:id="@+id/group1">
 
         <item
-            android:title="PHONE BLACKLIST"
+            android:title="Call Blacklist"
             android:id="@+id/phoneblacklist"
             android:icon="@drawable/callblocked">
 
         </item>
 
         <item
-            android:title="SMS BLACKLIST"
+            android:title="SMS Blacklist"
             android:id="@+id/smsblacklist"
             android:icon="@drawable/smsblocked">
         </item>
@@ -21,23 +21,23 @@
     <group android:checkableBehavior="single" android:id="@+id/group2">
 
         <item
-            android:title="SPAM MAILS"
+            android:title="News Feed"
             android:id="@+id/spam_mails"
-            android:icon="@drawable/mail_icon">
+            android:icon="@drawable/rss_feed">
         </item>
 
     </group>
 
     <group android:checkableBehavior="single" android:id="@+id/group3">
     <item
-            android:title="MANAGE PHONE LIST"
+            android:title="Manage Call List"
             android:id="@+id/phonelist"
             android:icon="@drawable/phonelist">
 
         </item>
 
     <item
-        android:title="MANAGE SMS LIST"
+        android:title="Manage SMS List"
         android:id="@+id/smslist"
         android:icon="@drawable/smslist">
     </item>
@@ -46,7 +46,7 @@
         <group android:checkableBehavior="single" android:id="@+id/group4">
 
         <item
-            android:title="ABOUT"
+            android:title="About"
             android:id="@+id/about"
             android:icon="@drawable/about">
         </item>
