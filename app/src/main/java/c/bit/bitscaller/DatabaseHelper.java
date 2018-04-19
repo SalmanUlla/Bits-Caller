@@ -227,7 +227,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM MessageTable where Number=" + numb + " ORDER BY rid DESC LiMIT 1", null);
         if (cursor.moveToFirst()) {
-            status = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.bphone));
+            status = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.status));
             cursor.close();
             db.close();
             if (status == 0)
