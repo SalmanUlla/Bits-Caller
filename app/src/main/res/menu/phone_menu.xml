@@ -5,5 +5,11 @@
         android:id="@+id/phone_clearlog"
         android:title="Clear Log" />
 
+    <item
+        android:id="@+id/backup"
+        android:title="Backup" />
+    <item
+        android:id="@+id/restore"
+        android:title="Restore" />
 
 </menu>

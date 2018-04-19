@@ -55,8 +55,8 @@ public class PhoneRecyclerAdapter extends RecyclerView.Adapter<PhoneRecyclerAdap
     public void onBindViewHolder(final PhoneViewHolder holder, int position) {
         holder.name.setText(listPhone.get(position).getName());
         holder.number.setText(listPhone.get(position).getNumber());
-        holder.lati.setText("" + listPhone.get(position).getLati());
-        holder.longi.setText("" + listPhone.get(position).getLongi());
+        holder.lati.setText("Lat:" + listPhone.get(position).getLati());
+        holder.longi.setText("Long:" + listPhone.get(position).getLongi());
         holder.time.setText(listPhone.get(position).getTime());
         holder.date.setText(listPhone.get(position).getDate());
     }

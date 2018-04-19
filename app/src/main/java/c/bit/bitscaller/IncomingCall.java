@@ -1,37 +1,45 @@
 package c.bit.bitscaller;
 
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 public class IncomingCall extends BroadcastReceiver {
     DatabaseHelper db;
-    DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-    String d = (String) df.format(Calendar.getInstance().getTime());
-    String date = (String) d.substring(0, 10);
-    String time = (String) d.substring(11, 16);
+    Context ctx;
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        ctx = context;
+        db = new DatabaseHelper(context);
         try {
-            db = new DatabaseHelper(context);
-            LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            //TODO:IMPORTANT TO CHANGE
-            float longitude = (float) 35.2525; //(float) location.getLongitude();
-            float latitude = (float) 122.8584;// (float) location.getLatitude();
             String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
             String number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
             if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
@@ -40,43 +48,49 @@ public class IncomingCall extends BroadcastReceiver {
                     Intent i = new Intent(context, AlertDial.class);
                     i.putExtra("NAME", "Blocked Caller");
                     i.putExtra("NUMBER", number);
-                    db.insertphone(number, latitude, longitude, date, time, 1);
+                    i.putExtra("Type", "NU");
+                    //db.insertphone(number, latitude, longitude, date, time, 1);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
                 } else if ((name != "") && (db.checkphoneblock(number) == 999)) {
                     Intent i = new Intent(context, AlertDial.class);
                     i.putExtra("NAME", name);
                     i.putExtra("NUMBER", number);
+                    i.putExtra("Type", "NK");
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    db.insertphone(number, latitude, longitude, date, time, 0);
+                    // db.insertphone(number, latitude, longitude, date, time, 0);
                     context.startActivity(i);
                 } else if ((name == "") && (db.checkphoneblock(number) == 0)) {
                     Intent i = new Intent(context, AlertDial.class);
                     i.putExtra("NAME", "Unknown Caller");
                     i.putExtra("NUMBER", number);
-                    db.insertphone(number, latitude, longitude, date, time, 0);
+                    i.putExtra("Type", "NUB");
+                    //  db.insertphone(number, latitude, longitude, date, time, 0);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
                 } else if ((name == "") && (db.checkphoneblock(number) == 1)) {
                     Intent i = new Intent(context, AlertDial.class);
                     i.putExtra("NAME", "Blocked Caller");
+                    i.putExtra("Type", "NB");
                     i.putExtra("NUMBER", number);
-                    db.insertphone(number, latitude, longitude, date, time, 1);
+                    // db.insertphone(number, latitude, longitude, date, time, 1);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
                 } else if ((name != "") && (db.checkphoneblock(number) == 1)) {
                     Intent i = new Intent(context, AlertDial.class);
                     i.putExtra("NAME", "Blocked Caller");
                     i.putExtra("NUMBER", number);
-                    db.insertphone(number, latitude, longitude, date, time, 1);
+                    i.putExtra("Type", "EB");
+                    //   db.insertphone(number, latitude, longitude, date, time, 1);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
                 } else if ((name != "") && (db.checkphoneblock(number) == 0)) {
                     Intent i = new Intent(context, AlertDial.class);
                     i.putExtra("NAME", name);
                     i.putExtra("NUMBER", number);
+                    i.putExtra("Type", "EUB");
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    db.insertphone(number, latitude, longitude, date, time, 0);
+                    //  db.insertphone(number, latitude, longitude, date, time, 0);
                     context.startActivity(i);
                 }
 
@@ -85,6 +99,7 @@ public class IncomingCall extends BroadcastReceiver {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
+
 
     public String getContactName(final String phoneNumber, Context context) {
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));

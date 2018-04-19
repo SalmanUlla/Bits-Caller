@@ -44,6 +44,8 @@ import c.bit.bitscaller.Adapters.PhoneRecyclerAdapter;
 
 public class phone extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener {
 
+    private static final int RESTORE_REQUEST_CODE = 0;
+
     private boolean bb;
     Toolbar toolbar;
     ActionBarDrawerToggle actionBarDrawerToggle;
@@ -210,8 +212,26 @@ public class phone extends AppCompatActivity implements ConnectivityReceiver.Con
             databaseHelper.clearlogphoneblacklist();
             phoneRecyclerAdapter.notifyDataSetChanged();
             getDataFromSQLite();
+        } else if (id == R.id.backup) {
+            bakup();
+        } else if (id == R.id.restore) {
+            restore();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // check that it is the SecondActivity with an OK result
+        if (requestCode == RESTORE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                // get String data from Intent
+                String filename = data.getStringExtra("filename");
+                databaseHelper.restore(this, filename);
+            }
+        }
     }
 
     @Override
@@ -278,7 +298,14 @@ public class phone extends AppCompatActivity implements ConnectivityReceiver.Con
             textView.setTextColor(color);
             snackbar.show();
         }
+    }
 
+    public void bakup() {
+        databaseHelper.backup(phone.this);
+    }
 
+    public void restore() {
+        Intent intent = new Intent(phone.this, Restore.class);
+        startActivityForResult(intent, RESTORE_REQUEST_CODE);
     }
 }

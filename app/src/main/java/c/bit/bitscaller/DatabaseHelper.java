@@ -7,10 +7,21 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -227,6 +238,71 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return 999;
     }
 
+    public String getCalFile() {
+        final Calendar clndr = Calendar.getInstance();
+        int year = clndr.get(Calendar.YEAR);
+        int month = clndr.get(Calendar.MONTH);
+        int day = clndr.get(Calendar.DAY_OF_MONTH);
+        String filename = year + "_" + month + "_" + day;
+        return filename;
+    }
+
+    public void backup(Context c) {
+        File exportDir = new File(Environment.getExternalStorageDirectory(), "BITS Backup");
+        if (!exportDir.exists()) {
+            exportDir.mkdirs();
+        }
+        String filename = getCalFile() + ".db";
+        final String inFileName = c.getDatabasePath(DatabaseHelper.DATABASE_NAME).toString();
+        final String outFileName = Environment.getExternalStorageDirectory().getPath() + "/BITS Backup/" + filename;
+        try {
+            File dbFile = new File(inFileName);
+            FileInputStream fis = new FileInputStream(dbFile);
+            OutputStream output = new FileOutputStream(outFileName);
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = fis.read(buffer)) > 0) {
+                output.write(buffer, 0, length);
+            }
+            output.flush();
+            output.close();
+            fis.close();
+            Toast.makeText(c.getApplicationContext(), "Backup To File " + filename + " Successful", Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            Writer writer = new StringWriter();
+            e.printStackTrace(new PrintWriter(writer));
+            String s = writer.toString();
+            Toast.makeText(c.getApplicationContext(), s, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void restore(Context c, String filename) {
+        File exportDir = new File(Environment.getExternalStorageDirectory(), "BITS Backup");
+        if (!exportDir.exists()) {
+            exportDir.mkdirs();
+        }
+        String outFileName = c.getDatabasePath(DatabaseHelper.DATABASE_NAME).toString();
+        String inFileName = Environment.getExternalStorageDirectory().getPath() + "/BITS Backup/" + filename;
+        try {
+            File dbFile = new File(inFileName);
+            FileInputStream fis = new FileInputStream(dbFile);
+            OutputStream output = new FileOutputStream(outFileName);
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = fis.read(buffer)) > 0) {
+                output.write(buffer, 0, length);
+            }
+            output.flush();
+            output.close();
+            fis.close();
+            Toast.makeText(c.getApplicationContext(), "Restore From File " + filename + " Successful", Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            Writer writer = new StringWriter();
+            e.printStackTrace(new PrintWriter(writer));
+            String s = writer.toString();
+            Toast.makeText(c.getApplicationContext(), s, Toast.LENGTH_LONG).show();
+        }
+    }
 
     public String getContactName(final String phoneNumber, Context context) {
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));

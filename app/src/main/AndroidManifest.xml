@@ -27,19 +27,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <receiver android:name=".IncomingCall">
-            <intent-filter>
+            <intent-filter android:priority="1000">
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
         <receiver android:name=".SmsList">
-            <intent-filter>
+            <intent-filter android:priority="1000">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
+        <!--  <activity
+              android:name=".splashscreen"
+              android:screenOrientation="portrait">
+
+        </activity>-->
         <activity
-            android:name=".splashscreen"
+            android:name=".phone"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,9 +53,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".phone"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".AlertDial"
             android:theme="@style/Theme.AppCompat.Dialog" />
@@ -81,6 +84,7 @@
         <activity
             android:name=".AlertSMS"
             android:theme="@style/Theme.AppCompat.Dialog" />
+        <activity android:name=".Restore" />
 
         <receiver
             android:name=".ConnectivityReceiver"
@@ -89,10 +93,11 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        <service android:name="MyWebRequestService"/>
-        <activity android:name=".IntentServiceActivity"
+        <service android:name="MyWebRequestService" />
+        <activity
+            android:name=".IntentServiceActivity"
             android:parentActivityName=".phone"
-            android:screenOrientation="portrait" ></activity>
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
