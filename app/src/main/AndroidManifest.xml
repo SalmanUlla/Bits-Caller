@@ -32,25 +32,24 @@
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
-
-
         <receiver android:name=".SmsList">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
-        <activity android:name=".splashscreen"
+        <activity
+            android:name=".splashscreen"
             android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".phone"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".phone"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AlertDial"
             android:theme="@style/Theme.AppCompat.Dialog" />
@@ -61,27 +60,26 @@
 
         <activity
             android:name=".news"
-            android:screenOrientation="portrait"
             android:parentActivityName=".phone"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".about"
             android:parentActivityName=".phone"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".sms"
             android:parentActivityName=".phone"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".managephonelist"
             android:parentActivityName=".phone"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".managesmslist"
             android:parentActivityName=".phone"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".AlertSMS"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AlertSMS"
             android:theme="@style/Theme.AppCompat.Dialog" />
 
         <receiver
@@ -91,6 +89,10 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
+        <service android:name="MyWebRequestService"/>
+        <activity android:name=".IntentServiceActivity"
+            android:parentActivityName=".phone"
+            android:screenOrientation="portrait" ></activity>
     </application>
 
 </manifest>

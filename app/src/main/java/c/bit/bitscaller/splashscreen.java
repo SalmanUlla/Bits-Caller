@@ -19,7 +19,7 @@ public class splashscreen extends AppCompatActivity {
             public void run() {
                 try
                 {
-                    sleep(2000);
+                    sleep(3000);
                     Intent intent = new Intent(splashscreen.this,phone.class);
                     startActivity(intent);
                     finish();

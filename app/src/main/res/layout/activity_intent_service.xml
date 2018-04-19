@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/web"
+    android:background="@color/white"
+    tools:context=".IntentServiceActivity">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar7"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#00bcd4"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <WebView
+        android:id="@+id/mywebview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbars="none" />
+
+</LinearLayout>

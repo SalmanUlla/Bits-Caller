@@ -131,8 +131,14 @@ public class phone extends AppCompatActivity implements ConnectivityReceiver.Con
                         break;
 
                     case R.id.about:
-                        Intent intent = new Intent(phone.this, about.class);
-                        startActivity(intent);
+                        Intent intent5 = new Intent(phone.this, about.class);
+                        startActivity(intent5);
+                        break;
+
+
+                    case R.id.bitswebsite:
+                        Intent intent6 = new Intent(phone.this,IntentServiceActivity.class);
+                        startActivity(intent6);
                         break;
 
 

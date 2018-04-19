@@ -43,7 +43,18 @@
     </item>
     </group>
 
-        <group android:checkableBehavior="single" android:id="@+id/group4">
+
+    <group android:checkableBehavior="single" android:id="@+id/group4">
+
+        <item
+            android:title="Bits Website"
+            android:id="@+id/bitswebsite"
+            android:icon="@drawable/web">
+        </item>
+
+    </group>
+
+        <group android:checkableBehavior="single" android:id="@+id/group5">
 
         <item
             android:title="About"
