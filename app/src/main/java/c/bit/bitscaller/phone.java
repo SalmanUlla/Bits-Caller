@@ -334,8 +334,8 @@ public class phone extends AppCompatActivity implements ConnectivityReceiver.Con
                 Toast.makeText(phone.this, "Please Check The Number You Entered", Toast.LENGTH_LONG).show();
             } else {
                 String tmpnum = "91" + number;
-                databaseHelper.insertphone(tmpnum, 0, 0, null, null, 1);
-                databaseHelper.insertsms(tmpnum, null, 1, null, null);
+                databaseHelper.insertphone(tmpnum, 0, 0, "d", "", 1);
+                databaseHelper.insertsms(tmpnum, "", 1, "d", "");
                 ad.dismiss();
             }
 

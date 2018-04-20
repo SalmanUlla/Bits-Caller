@@ -78,10 +78,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Pojo> getAllPhoneList(Context context) {
         List<Pojo> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM PhoneTable where BPhone=1 ORDER BY rid DESC", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM PhoneTable WHERE Date NOT LIKE 'd' AND BPhone=1 ORDER BY rid DESC", null);
         if (cursor.moveToFirst()) {
             do {
-                if(date!=null){
                     Pojo listRecord = new Pojo();
                     String name = getContactName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)), context);
                     if (name == "")
@@ -94,7 +93,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     listRecord.setDate(cursor.getString(cursor.getColumnIndex(DatabaseHelper.date)));
                     listRecord.setTime(cursor.getString(cursor.getColumnIndex(DatabaseHelper.time)));
                     list.add(listRecord);
-                }
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -106,10 +104,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Pojo> getAllSMSList(Context context) {
         List<Pojo> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM MessageTable where Status=1 ORDER BY rid DESC", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM MessageTable WHERE Date NOT LIKE 'd' AND Status=1 ORDER BY rid DESC", null);
         if (cursor.moveToFirst()) {
             do {
-               if(date!=null){
+               if(date!=""){
                    Pojo listRecord = new Pojo();
                    String name = getContactName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)), context);
                    if (name == "")
