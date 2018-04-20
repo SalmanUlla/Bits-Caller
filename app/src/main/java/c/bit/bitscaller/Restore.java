@@ -38,9 +38,9 @@ public class Restore extends AppCompatActivity {
         f.mkdirs();
         File[] files = f.listFiles();
         if (files.length == 0) {
-            Toast.makeText(this, "Turn On Internet To Access News Feeds", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "No Backup To Restore", Toast.LENGTH_LONG).show();
             finish();
-            return null;
+            return MyFiles;
         }
         else {
             for (int i = 0; i < files.length; i++) {
