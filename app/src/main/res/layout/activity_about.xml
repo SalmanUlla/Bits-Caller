@@ -22,7 +22,7 @@
         android:layout_gravity="center"
         android:layout_marginBottom="50dp"
         android:layout_marginTop="50dp"
-        android:background="@drawable/bits123"
+        android:background="@drawable/icon_bits"
         android:gravity="center" />
 
     <TextView
