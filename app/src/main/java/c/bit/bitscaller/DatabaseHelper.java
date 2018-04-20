@@ -81,18 +81,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM PhoneTable where BPhone=1 ORDER BY rid DESC", null);
         if (cursor.moveToFirst()) {
             do {
-                Pojo listRecord = new Pojo();
-                String name = getContactName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)), context);
-                if (name == "")
-                    listRecord.setName("Blocked Number");
-                else
-                    listRecord.setName(name);
-                listRecord.setNumber(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)));
-                listRecord.setLati(cursor.getFloat(cursor.getColumnIndex(DatabaseHelper.lati)));
-                listRecord.setLongi(cursor.getFloat(cursor.getColumnIndex(DatabaseHelper.longi)));
-                listRecord.setDate(cursor.getString(cursor.getColumnIndex(DatabaseHelper.date)));
-                listRecord.setTime(cursor.getString(cursor.getColumnIndex(DatabaseHelper.time)));
-                list.add(listRecord);
+                if(date!=null){
+                    Pojo listRecord = new Pojo();
+                    String name = getContactName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)), context);
+                    if (name == "")
+                        listRecord.setName("Blocked Number");
+                    else
+                        listRecord.setName(name);
+                    listRecord.setNumber(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)));
+                    listRecord.setLati(cursor.getFloat(cursor.getColumnIndex(DatabaseHelper.lati)));
+                    listRecord.setLongi(cursor.getFloat(cursor.getColumnIndex(DatabaseHelper.longi)));
+                    listRecord.setDate(cursor.getString(cursor.getColumnIndex(DatabaseHelper.date)));
+                    listRecord.setTime(cursor.getString(cursor.getColumnIndex(DatabaseHelper.time)));
+                    list.add(listRecord);
+                }
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -107,17 +109,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM MessageTable where Status=1 ORDER BY rid DESC", null);
         if (cursor.moveToFirst()) {
             do {
-                Pojo listRecord = new Pojo();
-                String name = getContactName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)), context);
-                if (name == "")
-                    listRecord.setName("Blocked Number");
-                else
-                    listRecord.setName(name);
-                listRecord.setNumber(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)));
-                listRecord.setBody(cursor.getString(cursor.getColumnIndex(DatabaseHelper.body)));
-                listRecord.setDate(cursor.getString(cursor.getColumnIndex(DatabaseHelper.date)));
-                listRecord.setTime(cursor.getString(cursor.getColumnIndex(DatabaseHelper.time)));
-                list.add(listRecord);
+               if(date!=null){
+                   Pojo listRecord = new Pojo();
+                   String name = getContactName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)), context);
+                   if (name == "")
+                       listRecord.setName("Blocked Number");
+                   else
+                       listRecord.setName(name);
+                   listRecord.setNumber(cursor.getString(cursor.getColumnIndex(DatabaseHelper.number)));
+                   listRecord.setBody(cursor.getString(cursor.getColumnIndex(DatabaseHelper.body)));
+                   listRecord.setDate(cursor.getString(cursor.getColumnIndex(DatabaseHelper.date)));
+                   listRecord.setTime(cursor.getString(cursor.getColumnIndex(DatabaseHelper.time)));
+                   list.add(listRecord);
+               }
             } while (cursor.moveToNext());
         }
         cursor.close();

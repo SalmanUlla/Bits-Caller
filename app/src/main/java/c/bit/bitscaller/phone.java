@@ -3,6 +3,7 @@ package c.bit.bitscaller;
 import android.Manifest;
 import android.annotation.SuppressLint;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -23,11 +24,14 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.annotation.Nullable;
 
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,7 +61,10 @@ public class phone extends AppCompatActivity implements ConnectivityReceiver.Con
     private ArrayList<Pojo> list;
     private PhoneRecyclerAdapter phoneRecyclerAdapter;
     private DatabaseHelper databaseHelper;
-    private static MyApplication mInstance;
+    Button add;
+    Button cancel;
+    EditText numbertext;
+    String number = "";
 
 
     @Override
@@ -216,6 +223,8 @@ public class phone extends AppCompatActivity implements ConnectivityReceiver.Con
             bakup();
         } else if (id == R.id.restore) {
             restore();
+        }else if (id == R.id.addtoblack) {
+            addblacklist();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -307,5 +316,30 @@ public class phone extends AppCompatActivity implements ConnectivityReceiver.Con
     public void restore() {
         Intent intent = new Intent(phone.this, Restore.class);
         startActivityForResult(intent, RESTORE_REQUEST_CODE);
+    }
+
+    public void addblacklist() {
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.add_blackllist, null);
+        dialogBuilder.setCancelable(false);
+        dialogBuilder.setView(dialogView);
+        add = dialogView.findViewById(R.id.addblack);
+        cancel = dialogView.findViewById(R.id.canceladd);
+        numbertext = dialogView.findViewById(R.id.blacknumber);
+        final AlertDialog ad = dialogBuilder.show();
+        add.setOnClickListener(v -> {
+            number = numbertext.getText().toString();
+            if (number == "" || number.length() != 10) {
+                Toast.makeText(phone.this, "Please Check The Number You Entered", Toast.LENGTH_LONG).show();
+            } else {
+                String tmpnum = "91" + number;
+                databaseHelper.insertphone(tmpnum, 0, 0, null, null, 1);
+                databaseHelper.insertsms(tmpnum, null, 1, null, null);
+                ad.dismiss();
+            }
+
+        });
+        cancel.setOnClickListener(v -> ad.dismiss());
     }
 }

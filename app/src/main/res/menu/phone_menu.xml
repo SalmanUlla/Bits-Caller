@@ -2,6 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/addtoblack"
+        android:title="Add" />
+
+    <item
         android:id="@+id/phone_clearlog"
         android:title="Clear Log" />
 
