@@ -146,9 +146,10 @@ public class phone extends AppCompatActivity implements ConnectivityReceiver.Con
 
 
                     case R.id.bitswebsite:
-                        Intent intent6 = new Intent(phone.this,IntentServiceActivity.class);
+                        Intent intent6 = new Intent(phone.this,TOI.class);
                         startActivity(intent6);
                         break;
+
 
 
                 }
@@ -225,6 +226,11 @@ public class phone extends AppCompatActivity implements ConnectivityReceiver.Con
             restore();
         }else if (id == R.id.addtoblack) {
             addblacklist();
+        }
+
+        else if (id == R.id.Refresh) {
+            phoneRecyclerAdapter.notifyDataSetChanged();
+            getDataFromSQLite();
         }
         return super.onOptionsItemSelected(item);
     }

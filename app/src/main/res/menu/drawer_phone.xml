@@ -47,10 +47,11 @@
     <group android:checkableBehavior="single" android:id="@+id/group4">
 
         <item
-            android:title="Bits Website"
+            android:title="Times of India"
             android:id="@+id/bitswebsite"
-            android:icon="@drawable/web">
+            android:icon="@drawable/ic_language_white_48dp">
         </item>
+
 
     </group>
 

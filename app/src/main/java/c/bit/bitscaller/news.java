@@ -35,7 +35,7 @@ public class news extends AppCompatActivity
     RSSObject rssObject;
 
     //RSS link
-    private final String RSS_link="http://www.thehindu.com/sci-tech/science/feeder/default.rss";
+    private final String RSS_link="https://timesofindia.indiatimes.com/rssfeeds/913168846.cms";
     private final String RSS_to_Json_API = "https://api.rss2json.com/v1/api.json?rss_url=";
 
 

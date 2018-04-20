@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/addtoblack"
@@ -7,7 +8,7 @@
 
     <item
         android:id="@+id/phone_clearlog"
-        android:title="Clear Log" />
+        android:title="Clear Blacklist" />
 
     <item
         android:id="@+id/backup"
@@ -15,5 +16,10 @@
     <item
         android:id="@+id/restore"
         android:title="Restore" />
+    <item
+        android:id="@+id/Refresh"
+        android:icon="@drawable/ic_refresh"
+        app:showAsAction="ifRoom"
+        android:title="Refresh"/>
 
 </menu>

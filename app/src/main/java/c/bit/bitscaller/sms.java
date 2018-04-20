@@ -94,6 +94,13 @@ public class sms extends AppCompatActivity  implements ConnectivityReceiver.Conn
            smsRecyclerAdapter.notifyDataSetChanged();
             getDataFromSQLite();
         }
+       else if(id==R.id.rr)
+        {
+            smsRecyclerAdapter.notifyDataSetChanged();
+            getDataFromSQLite();
+        }
+
+
         return super.onOptionsItemSelected(item);
     }
 

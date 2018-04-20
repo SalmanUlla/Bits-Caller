@@ -27,7 +27,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <receiver android:name=".IncomingCall">
             <intent-filter android:priority="1000">
                 <action android:name="android.intent.action.PHONE_STATE" />
@@ -40,21 +39,17 @@
         </receiver>
 
         <activity
-              android:name=".splashscreen"
-              android:screenOrientation="portrait">
-
+            android:name=".splashscreen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".phone"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".AlertDial"
             android:theme="@style/Theme.AppCompat.Dialog" />
@@ -95,11 +90,11 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        <service android:name="MyWebRequestService" />
+
         <activity
-            android:name=".IntentServiceActivity"
+            android:name=".TOI"
             android:parentActivityName=".phone"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

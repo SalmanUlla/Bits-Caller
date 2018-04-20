@@ -32,13 +32,6 @@
             android:layout_height="wrap_content" />
 
 
-        <TextView
-            android:text="Content"
-            android:id="@+id/txtContent"
-            android:textSize="14sp"
-            android:textStyle="normal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
