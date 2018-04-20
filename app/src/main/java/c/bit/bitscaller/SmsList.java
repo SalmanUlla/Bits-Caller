@@ -16,6 +16,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import static java.lang.System.exit;
+
 public class SmsList extends BroadcastReceiver {
 
     private static final String TAG = "Message recieved";
@@ -36,6 +38,8 @@ public class SmsList extends BroadcastReceiver {
 
         Intent smsIntent = new Intent(context, AlertSMS.class);
         String number = messages.getOriginatingAddress();
+        if(number=="")
+            exit(0);
         String name = getContactName(number, context);
         String body = messages.getMessageBody();
         smsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

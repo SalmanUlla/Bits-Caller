@@ -31,6 +31,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import static java.lang.System.exit;
+
 public class IncomingCall extends BroadcastReceiver {
     DatabaseHelper db;
     Context ctx;
@@ -42,6 +44,8 @@ public class IncomingCall extends BroadcastReceiver {
         try {
             String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
             String number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
+            if(number=="")
+                exit(0);
             if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
                 String name = getContactName(number, context);
                 if ((name == "") && (db.checkphoneblock(number) == 999)) {

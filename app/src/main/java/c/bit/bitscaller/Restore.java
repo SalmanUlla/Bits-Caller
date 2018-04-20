@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,8 +37,11 @@ public class Restore extends AppCompatActivity {
         File f = new File(DirectoryPath);
         f.mkdirs();
         File[] files = f.listFiles();
-        if (files.length == 0)
+        if (files.length == 0) {
+            Toast.makeText(this, "Turn On Internet To Access News Feeds", Toast.LENGTH_LONG).show();
+            finish();
             return null;
+        }
         else {
             for (int i = 0; i < files.length; i++) {
                 if (files[i].getName().endsWith(".db"))
